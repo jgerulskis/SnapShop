@@ -19,7 +19,7 @@ import com.google.android.material.tabs.TabLayout
 import java.io.ByteArrayOutputStream
 
 
-const val TAG="Main"
+private const val TAG="Main"
 private const val REQUEST_PHOTO = 2
 
 class MainActivity : AppCompatActivity() {
@@ -52,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             Log.d(TAG, "No camera app")
         }
+
+       // viewPager.setCurrentItem()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
