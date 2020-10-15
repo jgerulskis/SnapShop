@@ -1,41 +1,41 @@
 package com.example.snapshop
 
-import android.graphics.Bitmap
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 
 import com.example.snapshop.dummy.DummyContent.DummyItem
 
-
-class MyItemRecyclerViewAdapter(
-    private val values: List<Item>
-) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+/**
+ * [RecyclerView.Adapter] that can display a [DummyItem].
+ * TODO: Replace the implementation with code for your data type.
+ */
+class ResultRecyclerViewAdapter(
+    private val values: List<DummyItem>
+) : RecyclerView.Adapter<ResultRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_item, parent, false)
+            .inflate(R.layout.fragment_result, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.nameView.text = item.name
-        var imageBitmap = "laptop.jpg" as Bitmap
-        holder.pictureView.setImageBitmap(imageBitmap)
+        holder.idView.text = item.id
+        holder.contentView.text = item.content
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nameView: TextView = view.findViewById(R.id.item_name)
-        val pictureView: ImageView = view.findViewById(R.id.item_picture)
+        val idView: TextView = view.findViewById(R.id.item_number)
+        val contentView: TextView = view.findViewById(R.id.content)
 
-//        override fun toString(): String {
-//            return super.toString() + " '" + contentView.text + "'"
-//        }
+        override fun toString(): String {
+            return super.toString() + " '" + contentView.text + "'"
+        }
     }
 }
