@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.snapshop.ItemLogsViewModel
 import com.example.snapshop.R
 
 /**
@@ -15,12 +16,17 @@ import com.example.snapshop.R
  */
 class PlaceholderFragment : Fragment() {
 
-    private lateinit var pageViewModel: PageViewModel
+    //private lateinit var pageViewModel: PageViewModel
+    private lateinit var itemLogsViewModel: ItemLogsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
+//        pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
+//            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
+//        }
+        itemLogsViewModel = ViewModelProviders.of(this).get(ItemLogsViewModel::class.java).apply {
+            //initialize viewModel
+            randomItems()
         }
     }
 
@@ -30,9 +36,12 @@ class PlaceholderFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_main, container, false)
         val textView: TextView = root.findViewById(R.id.section_label)
-        pageViewModel.text.observe(this, Observer<String> {
-            textView.text = it
-        })
+//        pageViewModel.text.observe(this, Observer<String> {
+//            textView.text = it
+//        })
+//        itemLogsViewModel.observe(this, Observer<String> {
+//            textView.text = it
+//        })
         return root
     }
 

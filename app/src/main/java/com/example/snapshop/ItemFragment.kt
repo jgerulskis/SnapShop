@@ -91,4 +91,15 @@ class ItemFragment : Fragment() {
             result.text = "Temp Result"
         }
     }
+
+    private inner class ItemLogsAdapter(var items: List<Item>) : RecyclerView.Adapter<ItemsHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsHolder {
+            val view = layoutInflater.inflate(R.layout.fragment_item, parent, false)
+            return ItemsHolder(view)
+        }
+
+        override fun getItemCount(): Int {
+            return games.size
+        }
+    }
 }
