@@ -1,17 +1,17 @@
 package com.example.snapshop
 
-import android.graphics.Bitmap
-import androidx.recyclerview.widget.RecyclerView
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.snapshop.api.ImagePostResponse
-
-import com.example.snapshop.dummy.DummyContent.DummyItem
 import com.squareup.picasso.Picasso
-
+import androidx.core.content.ContextCompat.startActivity
 
 class MyItemRecyclerViewAdapter(
     private val values: List<ImagePostResponse>
@@ -27,7 +27,15 @@ class MyItemRecyclerViewAdapter(
         val item = values[position]
 
         //change item name from new search
-        holder.nameView.text = item.name
+        val name = if (item.name != "") item.name else "Couldn't identify image"
+        holder.nameView.text = name
+        if (item.name != "") {
+            holder.container.setOnClickListener {
+                val query = item.name.replace(" ", "+")
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.amazon.com/s?k=$query"))
+                holder.itemView.context.startActivity(intent)
+            }
+        }
         //set pictureView dynamically
         Picasso.get().load(item.url).into(holder.pictureView)
     //    holder.resultView.text = item.result
@@ -38,7 +46,7 @@ class MyItemRecyclerViewAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameView: TextView = view.findViewById(R.id.item_name)
         val pictureView: ImageView = view.findViewById(R.id.item_picture)
-        val resultView: TextView = view.findViewById(R.id.search_results)
+        val container: RelativeLayout = itemView.findViewById(R.id.item_container)
 //        override fun toString(): String {
 //            return super.toString() + " '" + contentView.text + "'"
 //        }

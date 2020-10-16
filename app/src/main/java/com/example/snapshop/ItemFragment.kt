@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -28,12 +29,7 @@ class ItemFragment : Fragment() {
     private var itemRecyclerView: RecyclerView? = null
     private var adapter: MyItemRecyclerViewAdapter? = null
     private var columnCount = 1
-    private val itemName : TextView? = null
-    private val itemPicture : ImageView? = null
-    private val searchResult : TextView? = null
     private lateinit var storage: Storage
-    private lateinit var results: Array<ImagePostResponse>
-    private var mUserVisibleHint: Boolean = true
 
     private val itemLogsViewModel : ItemLogsViewModel by lazy {
         ViewModelProviders.of(this).get(ItemLogsViewModel::class.java)
@@ -42,12 +38,10 @@ class ItemFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "Creating Items Fragment")
         storage = activity?.applicationContext?.let { Storage(it) }!!
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
-        Log.d(TAG, "hersdasd")
     }
 
     override fun onCreateView(
@@ -55,19 +49,12 @@ class ItemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
-        //itemLogsViewModel.randomItems()
         itemRecyclerView = view.findViewById(R.id.list) as RecyclerView
         itemRecyclerView?.layoutManager = LinearLayoutManager(context)
         updateUI()
-        Log.d(TAG, "just kidding here the whole time")
         return view
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        Log.d("blah", "Here")
-//        updateUI()
-//    }
 
     private fun updateUI() {
         val storage = activity?.applicationContext?.let { Storage(it) }
@@ -80,7 +67,6 @@ class ItemFragment : Fragment() {
         super.setMenuVisibility(menuVisible)
         if(menuVisible && itemRecyclerView!=null) {
             updateUI()
-        } else {
         }
     }
 
@@ -106,13 +92,11 @@ class ItemFragment : Fragment() {
         private lateinit var item: Item
         private val name: TextView = itemView.findViewById(R.id.item_name)
         private val picture: ImageView = itemView.findViewById(R.id.item_picture)
-        private val result: TextView = itemView.findViewById(R.id.search_results)
 
         fun bind(item: Item, position: Int) {
             this.item = item
             name.text = "Temp Name"
             Picasso.get().load("https://cdn.mos.cms.futurecdn.net/6t8Zh249QiFmVnkQdCCtHK.jpg").into(picture)
-            result.text = "Temp Result"
         }
     }
 
