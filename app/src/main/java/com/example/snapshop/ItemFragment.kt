@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.example.snapshop.api.ImagePostResponse
 import com.example.snapshop.dummy.DummyContent
 import com.squareup.picasso.Picasso
 import org.w3c.dom.Text
@@ -24,23 +25,29 @@ import org.w3c.dom.Text
  */
 private const val TAG = "ItemFragment"
 class ItemFragment : Fragment() {
-    private lateinit var itemRecyclerView: RecyclerView
+    private var itemRecyclerView: RecyclerView? = null
     private var adapter: MyItemRecyclerViewAdapter? = null
     private var columnCount = 1
     private val itemName : TextView? = null
     private val itemPicture : ImageView? = null
     private val searchResult : TextView? = null
+    private lateinit var storage: Storage
+    private lateinit var results: Array<ImagePostResponse>
+    private var mUserVisibleHint: Boolean = true
 
     private val itemLogsViewModel : ItemLogsViewModel by lazy {
         ViewModelProviders.of(this).get(ItemLogsViewModel::class.java)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "Creating Items Fragment")
+        storage = activity?.applicationContext?.let { Storage(it) }!!
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+        Log.d(TAG, "hersdasd")
     }
 
     override fun onCreateView(
@@ -48,16 +55,33 @@ class ItemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        //itemLogsViewModel.randomItems()
         itemRecyclerView = view.findViewById(R.id.list) as RecyclerView
-        itemRecyclerView.layoutManager = LinearLayoutManager(context)
+        itemRecyclerView?.layoutManager = LinearLayoutManager(context)
         updateUI()
+        Log.d(TAG, "just kidding here the whole time")
         return view
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//        Log.d("blah", "Here")
+//        updateUI()
+//    }
+
     private fun updateUI() {
-        val items = itemLogsViewModel.getItems()
-        adapter = MyItemRecyclerViewAdapter(items.asList())
-        itemRecyclerView.adapter = adapter
+        val storage = activity?.applicationContext?.let { Storage(it) }
+        adapter = storage?.getResultsFromStorage()?.toList()?.let { MyItemRecyclerViewAdapter(it) }
+        itemRecyclerView?.adapter = adapter
+    }
+
+    override fun setMenuVisibility(menuVisible: Boolean) {
+        Log.d(TAG, "Menu Visibility")
+        super.setMenuVisibility(menuVisible)
+        if(menuVisible && itemRecyclerView!=null) {
+            updateUI()
+        } else {
+        }
     }
 
     companion object {
@@ -99,7 +123,14 @@ class ItemFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return games.size
+            return items.size
+        }
+
+        override fun onBindViewHolder(holder: ItemsHolder, position: Int) {
+            val item = items[position]
+            holder.bind(item, position)
         }
     }
+
+    fun newInstance() = ItemFragment()
 }

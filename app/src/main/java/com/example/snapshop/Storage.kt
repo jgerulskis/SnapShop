@@ -9,14 +9,14 @@ class Storage(context: Context) {
     private val name = "past_results"
     private val resultsKey = "results"
     private var sharedPreferences: SharedPreferences
-    private var results: MutableList<ImagePostResponse>?
+    private var results: Array<ImagePostResponse>
 
     init {
         sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-        results = getResultsFromStorage().toMutableList()
+        results = getResultsFromStorage()
     }
 
-    private fun getResultsFromStorage(): Array<ImagePostResponse> {
+    fun getResultsFromStorage(): Array<ImagePostResponse> {
         val rawResults = sharedPreferences.getString(resultsKey, null)
         if (rawResults != null) {
             val gson = Gson()
@@ -26,14 +26,14 @@ class Storage(context: Context) {
     }
 
     fun saveResult(result: ImagePostResponse) {
-        results?.add(result)
+        results = results.plus(result)
         val gson = Gson()
         val editor = sharedPreferences.edit()
         editor.putString(resultsKey, gson.toJson(results))
         editor.apply()
     }
 
-    fun getResults(): MutableList<ImagePostResponse>? {
+    fun getResults(): Array<ImagePostResponse> {
         return results
     }
 }

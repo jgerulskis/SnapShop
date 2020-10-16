@@ -26,7 +26,7 @@ class PlaceholderFragment : Fragment() {
 //        }
         itemLogsViewModel = ViewModelProviders.of(this).get(ItemLogsViewModel::class.java).apply {
             //initialize viewModel
-            randomItems()
+            //randomItems()
         }
     }
 

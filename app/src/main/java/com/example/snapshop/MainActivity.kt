@@ -52,8 +52,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             Log.d(TAG, "No camera app")
         }
-
-       // viewPager.setCurrentItem()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -80,3 +78,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
